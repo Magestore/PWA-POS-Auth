@@ -67,14 +67,13 @@ class Rest
     public function __construct(
         \Magento\Framework\App\ProductMetadataInterface $productMetadata,
         \Magestore\WebposIntegration\Controller\Rest\RequestProcessor $requestProcessor,
-        \Magento\Framework\Webapi\Rest\Request  $restRequest,
+        \Magento\Framework\Webapi\Rest\Request $restRequest,
         \Magento\Webapi\Controller\PathProcessor $pathProcessor,
         \Magento\Framework\Webapi\Rest\Response $response,
         \Magento\Framework\Webapi\ErrorProcessor $errorProcessor,
         \Magento\Framework\App\AreaList $areaList,
         \Magento\Framework\App\State $appState
-    )
-    {
+    ) {
         $this->productMetadata = $productMetadata;
         $this->requestProcessor = $requestProcessor;
         $this->restRequest = $restRequest;
@@ -93,10 +92,10 @@ class Rest
      */
     public function aroundDispatch(\Magento\Webapi\Controller\Rest $subject, callable $proceed, \Magento\Framework\App\RequestInterface $request)
     {
-        if(version_compare($this->productMetadata->getVersion(), '2.2.6', '<')){
+        if (version_compare($this->productMetadata->getVersion(), '2.2.6', '<')) {
             $path = $this->pathProcessor->process($request->getPathInfo());
             $this->restRequest->setPathInfo($path);
-            if($this->requestProcessor->canProcess($this->restRequest)){
+            if ($this->requestProcessor->canProcess($this->restRequest)) {
                 $this->areaList->getArea($this->appState->getAreaCode())
                     ->load(\Magento\Framework\App\Area::PART_TRANSLATE);
                 try {

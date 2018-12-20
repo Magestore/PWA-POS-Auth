@@ -29,8 +29,7 @@ class InstallData implements InstallDataInterface
      */
     public function __construct(
         ApiServiceInterface $apiService
-    )
-    {
+    ) {
         $this->apiService = $apiService;
     }
 

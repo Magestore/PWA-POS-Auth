@@ -84,7 +84,7 @@ class RequestProcessor
         \Magestore\Webpos\Api\Staff\StaffManagementInterface $staffManagement,
         \Magestore\Webpos\Api\Staff\SessionRepositoryInterface $sessionRepository,
         \Magestore\Webpos\Api\Location\LocationRepositoryInterface $locationRepository
-    ){
+    ) {
         $this->response = $response;
         $this->inputParamsResolver = $inputParamsResolver;
         $this->serviceOutputProcessor = $serviceOutputProcessor;
@@ -105,9 +105,9 @@ class RequestProcessor
         $route = $this->inputParamsResolver->getRoute();
         $aclResource = $route->getAclResources();
         if ($route->getServiceMethod() != 'logout') {
-            try{
+            try {
                 $session = $this->sessionRepository->getBySessionId($sessionId);
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 throw new AuthorizationException(
                     __($e->getMessage())
                 );
@@ -138,9 +138,9 @@ class RequestProcessor
                     }
                 }
             }
-            try{
+            try {
                 $currentStaff = $this->staffManagement->authorizeSession($sessionId);
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 throw new AuthorizationException(
                     __($e->getMessage())
                 );
@@ -164,7 +164,8 @@ class RequestProcessor
      * @throws \Magento\Framework\Exception\InputException
      * @throws \Magento\Framework\Webapi\Exception
      */
-    public function doProcess(\Magento\Framework\Webapi\Rest\Request $request) {
+    public function doProcess(\Magento\Framework\Webapi\Rest\Request $request)
+    {
         $route = $this->inputParamsResolver->getRoute();
         $serviceMethodName = $route->getServiceMethod();
         $serviceClassName = $route->getServiceClass();

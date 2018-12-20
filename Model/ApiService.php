@@ -50,15 +50,16 @@ class ApiService implements \Magestore\WebposIntegration\Api\ApiServiceInterface
     /**
      * @return string
      */
-    public function getToken(){
-        try{
+    public function getToken()
+    {
+        try {
             $integration = $this->getIntegration();
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->setupIntegration();
             $integration = $this->getIntegration();
         }
         $token = $this->getIntegrationAccessToken($integration);
-        if(!$token){
+        if (!$token) {
             $integration = $this->createAccessToken($integration);
             $token = $this->getIntegrationAccessToken($integration);
         }
@@ -69,11 +70,12 @@ class ApiService implements \Magestore\WebposIntegration\Api\ApiServiceInterface
      * @param Integration $integration
      * @return string
      */
-    public function getIntegrationAccessToken(\Magento\Integration\Model\Integration $integration){
+    public function getIntegrationAccessToken(\Magento\Integration\Model\Integration $integration)
+    {
         $token = '';
-        if(($integration->getStatus() == Integration::STATUS_ACTIVE) && $integration->getConsumerId()){
+        if (($integration->getStatus() == Integration::STATUS_ACTIVE) && $integration->getConsumerId()) {
             $accessToken = $this->oauthService->getAccessToken($integration->getConsumerId());
-            if($accessToken && $accessToken->getToken()){
+            if ($accessToken && $accessToken->getToken()) {
                 $token = $accessToken->getToken();
             }
         }
@@ -85,7 +87,8 @@ class ApiService implements \Magestore\WebposIntegration\Api\ApiServiceInterface
      * @return \Magento\Integration\Model\Integration
      * @throws \Exception
      */
-    public function createAccessToken(\Magento\Integration\Model\Integration $integration){
+    public function createAccessToken(\Magento\Integration\Model\Integration $integration)
+    {
         if ($this->oauthService->createAccessToken($integration->getConsumerId(), true)) {
             $integration->setStatus(Integration::STATUS_ACTIVE)->save();
         }
@@ -95,7 +98,8 @@ class ApiService implements \Magestore\WebposIntegration\Api\ApiServiceInterface
     /**
      * @return $this
      */
-    public function setupIntegration(){
+    public function setupIntegration()
+    {
         $this->integrationManager->processIntegrationConfig([ApiServiceInterface::API_INTEGRATION_NAME]);
         return $this;
     }
@@ -104,9 +108,10 @@ class ApiService implements \Magestore\WebposIntegration\Api\ApiServiceInterface
      * @return \Magento\Integration\Model\Integration
      * @throws \Exception
      */
-    public function getIntegration(){
+    public function getIntegration()
+    {
         $integration = $this->integrationService->findByName(self::API_INTEGRATION_NAME);
-        if($integration && $integration->getIntegrationId()){
+        if ($integration && $integration->getIntegrationId()) {
             return $integration;
         }
         throw new \Exception(__('POS Integration has not been setup correctly yet'));
